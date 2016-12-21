@@ -41,7 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-rubocop', '~> 1.2'
   spec.add_development_dependency 'rb-fsevent', '~> 0.9'
   spec.add_development_dependency 'terminal-notifier-guard', '~> 1.7'
-  spec.add_development_dependency 'nyan-cat-formatter', '~> 0.10' # important
 
   # General
   spec.add_development_dependency 'bundler', '~> 1.13'

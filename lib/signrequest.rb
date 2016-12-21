@@ -20,23 +20,12 @@ module SignRequest
     DOCUMENT_ENDPOINT      = 'https://signrequest.com/api/v1/documents/'.freeze
     SIGNATURE_ENDPOINT     = 'https://signrequest.com/api/v1/signrequests/'.freeze
 
-    # Constants for Username, Password, Subdomain, and Token
-    # Assigns to ENV if it exists (else the value is nil)
-    #
-    # Username, Password, and Subdomain are used for authentication to obtain a
-    # token.
-    # The Token is obtained from successful authentication
-    USER      = ENV['SIGN_REQUEST_USER']
-    PASSWD    = ENV['SIGN_REQUEST_PASSWD']
-    SUBDOMAIN = ENV['SIGN_REQUEST_SUBDOMAIN']
-    TOKEN     = ENV['SIGN_REQUEST_TOKEN']
-
     # Authentication with username and password to receive a token for the
     # SignRequest API.
     #
     # The authenticate method will, upon success, return a JSON object
     # containing {"token": "<token>", "created": true}
-    def authenticate(user = USERNAME, passwd = PASSWD, subdomain = SUBDOMAIN)
+    def authenticate(user, passwd, subdomain)
       RestClient::Request.execute(
         method:   :get,
         user:     user,

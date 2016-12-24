@@ -27,10 +27,10 @@ module SignRequest
     # containing {"token": "<token>", "created": true}
     def authenticate(user, passwd, subdomain)
       RestClient::Request.execute(
-        method:   :get,
+        method:   :post,
         user:     user,
         password: passwd,
-        payload:  { 'subdomain' => subdomain },
+        payload:  "subdomain=#{subdomain}",
         url:      TOKEN_REQUEST_ENDPOINT
       )
     end
@@ -43,7 +43,7 @@ module SignRequest
     end
 
     def local_create_document(token, *payload_args)
-      valid_args?(payload_args.length, 2, %w(file external_id))
+      valid_args?(payload_args.size, 2, %w(file external_id))
 
       RestClient::Request.execute(
         method:  :post,
@@ -62,7 +62,7 @@ module SignRequest
     end
 
     def remote_create_document
-      valid_args?(payload_args.length, 2, %w(file_from_url external_id))
+      valid_args?(payload_args.size, 2, %w(file_from_url external_id))
 
       RestClient::Request.execute(
         method: :post,
@@ -80,7 +80,7 @@ module SignRequest
     end
 
     def sign_request(token, *payload_args)
-      valid_args?(payload_args.length, 4, %w(document from_email message signers))
+      valid_args?(payload_args.size, 4, %w(document from_email message signers))
 
       RestClient::Request.execute(
         method: :post,

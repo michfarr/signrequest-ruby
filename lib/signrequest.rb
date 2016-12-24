@@ -49,7 +49,6 @@ module SignRequest
         method:  :post,
         headers: {
           Authoriaation: "Token #{token}",
-          accept:        'application/json',
           content_type:  'multipart/form-data'
         },
         payload: {
@@ -68,8 +67,7 @@ module SignRequest
         method: :post,
         headers: {
           Authorization: "Token #{token}",
-          accept:        'application/json',
-          content_type:  'application/json'
+          content_type:  :json
         },
         payload: {
           'file_from_url' => payload_args[0],
@@ -86,8 +84,7 @@ module SignRequest
         method: :post,
         headers: {
           Authorization: "Token #{token}",
-          accept:        'application/json',
-          content_type:  'application/json'
+          content_type:  :json
         },
         payload: {
           document:   payload_args[0],

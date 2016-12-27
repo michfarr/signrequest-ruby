@@ -58,7 +58,7 @@ describe SignRequest do
             expect(response['code']).to eq(201)
           end
 
-          it 'returns a response body with a token object, and a created object' do
+          it 'returns a response body bash with a token, and a created bool' do
             expect(response['body']).to match(
               'token' => a_string_matching(/^[0-9a-zA-Z]*$/),
               'created' => true
@@ -82,6 +82,23 @@ describe SignRequest do
             )
           end
         end
+      end
+    end
+
+    describe '.handle_restclient_error' do
+      Err_Resp = Struct.new(:response)
+      error_message = Err_Resp.new("{\"detail\":\"This is an error!\"}")
+
+      response = SignRequest::API.handle_restclient_error(1000, error_message)
+
+      it "returns the response['code']" do
+        expect(response['code']).to eq(1000)
+      end
+
+      it "returns the response['body']" do
+        expect(response['body']).to match(
+          'detail' => a_string_matching('This is an error!')
+        )
       end
     end
 

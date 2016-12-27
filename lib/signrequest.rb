@@ -63,7 +63,7 @@ module SignRequest
 
     def self.valid_args?(received, args_list)
       error_message = "Payload requires #{args_list.length} arguments: " \
-      "#{args_list * ', '} (Received #{received.to_i})"
+      "#{args_list * ', '} (Received #{received})"
 
       raise ArgumentError, error_message unless received == args_list.length
     end

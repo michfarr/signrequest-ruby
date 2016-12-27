@@ -61,15 +61,15 @@ module SignRequest
       handle_restclient_error(400, error_message)
     end
 
-    def valid_args?(received, required, args_list)
-      error_message = "Payload requires #{required} arguments: " \
-      "#{args_list * ', '} (Received #{received}"
+    def self.valid_args?(received, args_list)
+      error_message = "Payload requires #{args_list.length} arguments: " \
+      "#{args_list * ', '} (Received #{received.to_i})"
 
-      raise ArgumentError, error_message unless received == required
+      raise ArgumentError, error_message unless received == args_list.length
     end
 
     def self.create_document_from_file(token, *payload_args)
-      valid_args?(payload_args.size, 2, %w(file external_id))
+      valid_args?(payload_args.size, %w(file external_id))
 
       res = RestClient::Request.execute(
         method:  :post,
@@ -91,7 +91,7 @@ module SignRequest
     end
 
     def self.create_document_from_url(token, *payload_args)
-      valid_args?(payload_args.size, 2, %w(file_from_url external_id))
+      valid_args?(payload_args.size, %w(file_from_url external_id))
 
       res = RestClient::Request.execute(
         method: :post,
@@ -112,7 +112,7 @@ module SignRequest
     end
 
     def self.create_sign_request(token, *payload_args)
-      valid_args?(payload_args.size, 4, %w(document from_email message signers))
+      valid_args?(payload_args.size, %w(document from_email message signers))
 
       res = RestClient::Request.execute(
         method: :post,
@@ -136,7 +136,7 @@ module SignRequest
     end
 
     def self.sign_request_reminder(token, *payload_args)
-    #   valid_args?(payload_args.size, 0, %w())
+    #   valid_args?(payload_args.size, %w())
     #
     #   res = RestClient::Request.execute(
     #     method: :post,

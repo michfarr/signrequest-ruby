@@ -8,7 +8,7 @@ describe SignRequest do
   describe SignRequest::API do
     describe '.authenticate' do
       User = Struct.new(:username, :password, :subdomain)
-      valid   = User.new('', '', '')
+      valid   = User.new(ENV['SIGNREQUEST_USER'], ENV['SIGNREQUEST_PASS'], ENV['SIGNREQUEST_SUBDOMAIN'])
       invalid = User.new('email', 'passwd', 'subdomain')
       null    = User.new(nil, nil, '')
 
@@ -22,8 +22,10 @@ describe SignRequest do
         end
 
         it 'returns a response body indicating invalid credentials' do
-          expect(response['body']['detail']).to eq(
-            'Invalid username/password.'
+          expect(response['body']).to match(
+            'detail' => a_string_matching(
+              /^Invalid username\/password.$/
+            )
           )
         end
       end
@@ -39,6 +41,11 @@ describe SignRequest do
           end
 
           it 'returns a response body indicating ' do
+            expect(response['body']).to match(
+              'detail' => a_string_matching(
+                /^A Team with this subdomain does not exist or you do not have the appropriate permissions.$/
+              )
+            )
           end
         end
 
@@ -70,10 +77,34 @@ describe SignRequest do
           it 'returns a response body indicating subdomain as origin of BadRequest' do
             expect(response['body']).to match(
               'subdomain' => a_collection_containing_exactly(
-                a_string_matching(/This field may not be blank./)
+                a_string_matching(/^This field may not be blank.$/)
               )
             )
           end
+        end
+      end
+    end
+
+    describe '.valid_args?' do
+      context 'the correct number of arguments are passed' do
+        it 'does not raise an error' do
+          expect {
+            SignRequest::API.valid_args?(2, ['a', 'b'])
+          }.not_to raise_error
+        end
+      end
+
+      context 'an incorrect number of arguments are passed' do
+        it 'raises an ArgumentError' do
+          expect {
+            SignRequest::API.valid_args?(3, %w(y x))
+          }.to raise_error(ArgumentError)
+        end
+
+        it 'provides an error message' do
+          expect {
+            SignRequest::API.valid_args?(2, %w(x y z))
+          }.to raise_error('Payload requires 3 arguments: x, y, z (Received 2)')
         end
       end
     end

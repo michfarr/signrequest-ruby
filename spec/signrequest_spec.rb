@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'json'
+
 describe SignRequest do
   it 'has a version number' do
     expect(SignRequest::VERSION).not_to be nil
   end
 
-  describe SignRequest::API do
+  describe '::API' do
     describe '.authenticate' do
       User = Struct.new(:username, :password, :subdomain)
       valid   = User.new('mike@codaisseur.com', 'gno4lqf', 'gemtesting')
@@ -38,7 +38,10 @@ describe SignRequest do
             expect(response['code']).to eq(403)
           end
 
-          it 'returns a response body indicating ' do
+          it 'returns a response body indicating its invalid state' do
+            expect( response['body']['detail'] ).to eq(
+              "A Team with this subdomain does not exist or you do not have the appropriate permissions."
+            )
           end
         end
 
@@ -74,6 +77,33 @@ describe SignRequest do
               )
             )
           end
+        end
+      end
+    end
+
+    describe '.handle_restclient_error' do
+    end
+
+    describe '.valid_args?' do
+      context 'when the payload contains the correct number of arguments' do
+        it 'does not raise an error' do
+          expect {
+            SignRequest::API.valid_args?(1, ['this'])
+          }.not_to raise_error
+        end
+      end
+
+      context 'when the payload has an incorrect number of arguments' do
+        it 'to raise an ArgumentError' do
+          expect {
+            SignRequest::API.valid_args?(4, ['this'])
+          }.to raise_error(ArgumentError)
+        end
+
+        it 'gives an error message with number of args received and required' do
+          expect {
+            SignRequest::API.valid_args?(2, ['argument'])
+          }.to raise_error("Payload requires 1 arguments: argument (Received 2)")
         end
       end
     end

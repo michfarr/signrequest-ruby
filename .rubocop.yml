@@ -1,3 +1,6 @@
 Metrics/MethodLength:
   Exclude:
     - lib/signrequest.rb
+Metrics/BlockLength:
+  Exclude:
+    - signrequest.gemspec

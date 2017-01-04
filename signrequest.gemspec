@@ -3,10 +3,9 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'signrequest/version'
 
-# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
   spec.name             = 'signrequest'
-  spec.version          = Signrequest::VERSION
+  spec.version          = SignRequest::VERSION
   spec.authors          = ['michfarr']
   spec.email            = ['etnunc@protonmail.com']
   spec.date             = Time.now.utc.strftime('%Y-%m-%d')
@@ -35,19 +34,17 @@ Gem::Specification.new do |spec|
   spec.require_paths    = ['lib']
 
   # Testing
-  spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.46'
-  spec.add_development_dependency 'guard-rspec', '~> 4.7'
-  spec.add_development_dependency 'guard-rubocop', '~> 1.2'
-  spec.add_development_dependency 'rb-fsevent', '~> 0.9'
+  spec.add_development_dependency 'rspec',                   '~> 3.0'
+  spec.add_development_dependency 'rubocop',                 '~> 0.46'
+  spec.add_development_dependency 'guard-rspec',             '~> 4.7'
+  spec.add_development_dependency 'guard-rubocop',           '~> 1.2'
+  spec.add_development_dependency 'rb-fsevent',              '~> 0.9'
   spec.add_development_dependency 'terminal-notifier-guard', '~> 1.7'
 
   # General
-  spec.add_development_dependency 'bundler', '~> 1.13'
-  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'bundler',                 '~> 1.13'
+  spec.add_development_dependency 'rake',                    '~> 10.0'
 
   # Runtime
-  spec.add_runtime_dependency 'rest-client', '~> 2.0'
-  spec.add_runtime_dependency 'oj', '~> 2.18'
+  spec.add_runtime_dependency     'rest-client',             '~> 2.0'
 end
-# rubocop:enable Metrics/BlockLength
